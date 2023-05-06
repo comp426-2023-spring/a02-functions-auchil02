@@ -1,0 +1,22 @@
+{
+  "name": "a02-functions-auchil02",
+  "version": "1.0.0",
+  "description": "This is a command line Node.js package that ingests API data from Open-Meteo.",
+  "main": "cli.js",
+  "scripts": {
+    "test": "node cli.js -n 35.92 -w 79.05 -z America/New_York"
+  },
+  "keywords": [
+    "cli",
+    "api",
+    "openmeteo",
+    "galosh"
+  ],
+  "author": "@auchil02",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "minimist": "^1.2.8",
+    "moment-timezone": "^0.5.43",
+    "node-fetch": "^3.3.1"
+  }
+}
