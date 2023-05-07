@@ -37,7 +37,7 @@ if (argv.d == null) {
 } else {
 	days = argv.d;
 }
-
+/*
 if (apiData.daily.precipitation_hours[days] != null) {
 	var output = "The temperature is " + apiData.daily.temperature_2m_max[days] +
 				" degrees Fahrenheit with a windspeed of " + apiData.daily.windspeed_10m_max[days] +
@@ -47,6 +47,22 @@ if (apiData.daily.precipitation_hours[days] != null) {
 	var output = "The temperature is " + apiData.daily.temperature_2m_max[days] + apiData.daily.temperature_unit +
 				" with a windspeed of " + apiData.daily.windspeed_10m_max[days] + apiData.daily.windspeed_unit +
 				"in " + days + " days.";
+}
+*/
+
+var dayString;
+if (days > 1) {
+	dayString = "in " + days + " days.";
+} else if (days == 1) {
+	dayString = "tomorrow.";
+} else {
+	dayString = "today.";
+}
+
+if (apiData.daily.precipitation_hours[days] > 0) {
+	var output = "You might need your galoshes " + dayString;
+} else {
+	var output = "You will not need your galoshes " + dayString;
 }
 
 console.log(output)
