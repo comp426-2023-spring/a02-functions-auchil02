@@ -2,7 +2,7 @@
 
 import minimist from 'minimist';
 import moment from 'moment-timezone';
-import fetch from 'fetch';
+import fetch from 'node-fetch';
 
 var argv = minimist(process.argv.slice(2));
 
@@ -23,7 +23,7 @@ const timezone = moment.tz.guess();
 const lati = argv.n || (-1 * argv.s);
 const longi = argv.e || (-1 * argv.w);
 
-const apiResponse = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lati + '&longitude=' + longi + '&daily=precipitation_hours&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=' + timezone);
+const apiResponse = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lati + '&longitude=' + longi + '&daily=temperature_2m_max,precipitation_hours,windspeed_10m_max&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=' + timezone);
 const apiData = await(apiResponse.json())
 
 if (argv.j) {
@@ -31,14 +31,22 @@ if (argv.j) {
 	process.exit(0);
 }
 
+let days;
 if (argv.d == null) {
-	const days = 1;
+	days = 1;
 } else {
-	const days = argv.d;
+	days = argv.d;
 }
 
-var output = "The temperature is " + apiData.daily.temperature + apiData.daily.temperature_unit +
-				" with a windspeed of " + apiData.daily.windspeed + apiData.daily.windspeed_unit +
-				" and " + apiData.precipitation_hours + apiData.precipitation_unit + " of precipitation " +
+if (apiData.daily.precipitation_hours[days] != null) {
+	var output = "The temperature is " + apiData.daily.temperature_2m_max[days] +
+				" degrees Fahrenheit with a windspeed of " + apiData.daily.windspeed_10m_max[days] +
+				" MPH and " + apiData.daily.precipitation_hours[days] + " inches of precipitation " +
 				"in " + days + " days.";
+} else {
+	var output = "The temperature is " + apiData.daily.temperature_2m_max[days] + apiData.daily.temperature_unit +
+				" with a windspeed of " + apiData.daily.windspeed_10m_max[days] + apiData.daily.windspeed_unit +
+				"in " + days + " days.";
+}
 
+console.log(output)
